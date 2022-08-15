@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbardett <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mbardett <mbardett@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/04 13:15:02 by mbardett          #+#    #+#              #
-#    Updated: 2022/02/04 13:15:09 by mbardett         ###   ########.fr        #
+#    Updated: 2022/08/15 18:07:10 by mbardett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS = ft_isalpha.c \
 	  ft_memcmp.c \
 	  ft_strnstr.c \
 	  ft_atoi.c \
+	  ft_atoi_mini.c \
 	  ft_memchr.c \
 	  ft_calloc.c \
 	  ft_strdup.c \
@@ -56,21 +57,21 @@ BONUS  = ft_lstnew.c \
 		ft_lstclear.c \
 		ft_lstiter.c \
 		ft_lstmap.c
-		
+
 BONUS_OBJS = $(BONUS:.c=.o)
 
-CC = gcc 
-RM = rm -f 
-CFLAGS = -Wall -Wextra -Werror 
+CC = gcc
+RM = rm -f
+CFLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a
 
-all: $(NAME) 
+all: $(NAME)
 
 $(NAME): $(OBJS)
 				ar rcs $(NAME) $(OBJS)
 
-clean: 
+clean:
 				$(RM) $(OBJS) $(BONUS_OBJS)
 fclean:		clean
 				$(RM) $(NAME)

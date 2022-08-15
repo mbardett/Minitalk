@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbardett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbardett <mbardett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 13:14:45 by mbardett          #+#    #+#             */
-/*   Updated: 2022/02/13 20:41:19 by mbardett         ###   ########.fr       */
+/*   Updated: 2022/08/15 18:09:23 by mbardett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,3 @@ int	ft_atoi(const char	*str)
 	}
 	return ((int)checkresult(result, sign));
 }
-
-

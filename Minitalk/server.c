@@ -6,14 +6,14 @@
 /*   By: mbardett <mbardett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 17:41:14 by mbardett          #+#    #+#             */
-/*   Updated: 2022/08/13 22:22:04 by mbardett         ###   ########.fr       */
+/*   Updated: 2022/08/15 21:32:59 by mbardett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libft/libft.h"
 //The (siginfo_t) *info is a struct that contains several informations,
 //in our case we want to fetch the Client process's ID(PID), so that the Server
-//will be able to reply with its own signal;
+//will be able to reply with its own signal(bonus assignment);
 //We are going to use an unsigned char because:"Unsigned char is guaranteed
 //never to have trap values, and its values are pure binary notation.
 //You access any object as an array of unsigned char to view its value
@@ -24,41 +24,58 @@
 //"if (signum == SIGUSR1)
 // 		c |= 1;
 // if (signum == SIGUSR2)
-//		c |= 0;
+//		c |= 0;"
 //
 //(because the subject for this project demands to use SIGUSR1 and SIGUSR2);
 //less intuitive but it's shorter and waaay more elegant, thx Shadowaker!
 //https://github.com/Shadowaker/42_Minitalk/blob/master/server_bonus.c
+//Even though we call it ft_handler, it actually replicates
+//the sigaction prototype
+
+void	ft_who_says_what(pid_t pid, int *flag)
+{
+	if (*flag == 0)
+	{
+		ft_putstr_fd("Client ", 1);
+		ft_putnbr_fd(pid, 1);
+		ft_putstr_fd(" says: ", 1);
+		*flag = 1;
+	}
+}
 
 void	ft_handler(int signum, siginfo_t *info, void *ucontext)
 {
-	static unsigned char	c;
-	static int				i;
+	static unsigned char	c = 0;
+	static int				i = 0;
 	pid_t					client_pid;
+	static int				flag = 0;
 
-	c = 0;
-	i = 0;
+	c |= (signum == SIGUSR1);
+	(void)ucontext;
 	client_pid = info->si_pid;
+	ft_who_says_what(client_pid, &flag);
 	if (++i == 8)
 	{
 		i = 0;
 		if (!c)
 		{
 			kill(client_pid, SIGUSR2);
-			ft_putstr_fd("End of transmission\n", 1);
+			ft_putstr_fd("\nEnd of transmission\n", 1);
+			flag = 0;
 			return ;
 		}
 		write(1, &c, 1);
 		c = 0;
-		kill(client_pid, SIGUSR1);
 	}
+	else
+		c <<= 1;
 }
 
 static void	ft_show_pid(pid_t pid)
 {
-	ft_putstr_fd("Current PID is:", 1);
+	ft_putstr_fd("Current PID is: ", 1);
 	ft_putnbr_fd(pid, 1);
-	write(1, '\n', 1);
+	write(1, "\n", 1);
 }
 
 //Since we are going to handle signals, we must init the sigaction struct;
@@ -82,6 +99,8 @@ int	main(void)
 	sigaction(SIGUSR1, &sa, 0);
 	sigaction(SIGUSR2, &sa, 0);
 	while (1)
+	{
 		pause();
+	}
 	return (0);
 }
